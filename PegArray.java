@@ -1,4 +1,3 @@
-// Source code is decompiled from a .class file using FernFlower decompiler (from Intellij IDEA).
 public class PegArray {
 	private Peg[] pegs;
 	private int exactMatches;

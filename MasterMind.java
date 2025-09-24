@@ -1,4 +1,3 @@
-// Source code is decompiled from a .class file using FernFlower decompiler (from Intellij IDEA).
 public class MasterMind {
 	private boolean reveal = false;
 	private PegArray[] guesses = new PegArray[10];
