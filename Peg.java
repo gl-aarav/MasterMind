@@ -1,23 +1,20 @@
-/**
- *	Defines the peg used in the MasterMind game.
- *	Used inside the PegArray class.
- *
- *	@author	Mr Greenstein
- */
+// Source code is decompiled from a .class file using FernFlower decompiler (from Intellij IDEA).
 public class Peg {
 	private char letter;
-	
-	/* Default constructor, letter is X */
+
 	public Peg() {
-		letter = 'X';
+		this.letter = 'X';
 	}
-	
-	/* Constructor in which you assign letter */
-	public Peg(char l) {
-		letter = l;
+
+	public Peg(char var1) {
+		this.letter = var1;
 	}
-	
-	// Accessor and modifier methods
-	public char getLetter() { return letter; }
-	public void setLetter(char c) { letter = c; }
+
+	public char getLetter() {
+		return this.letter;
+	}
+
+	public void setLetter(char var1) {
+		this.letter = var1;
+	}
 }

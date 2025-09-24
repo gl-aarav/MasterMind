@@ -1,34 +1,108 @@
-/**
- *	Plays the game of MasterMind.
- *	<Describe the game here>
- *	@author
- *	@since
- */
-
+// Source code is decompiled from a .class file using FernFlower decompiler (from Intellij IDEA).
 public class MasterMind {
+	private boolean reveal = false;
+	private PegArray[] guesses = new PegArray[10];
+	private PegArray master;
+	private final int PEGS_IN_CODE = 4;
+	private final int MAX_GUESSES = 10;
+	private final int PEG_LETTERS = 6;
+	private final boolean DEBUG = false;
 
-	private boolean reveal;			// true = reveal the master combination
-	private PegArray[] guesses;		// the array of guessed peg arrays
-	private PegArray master;		// the master (key) peg array
-	
-	// Constants
-	private final int PEGS_IN_CODE = 4;		// Number of pegs in code
-	private final int MAX_GUESSES = 10;		// Max number of guesses
-	private final int PEG_LETTERS = 6;		// Number of different letters on pegs
-											// 6 = A through F
+	public MasterMind() {
+		for (int var1 = 0; var1 < this.guesses.length; ++var1) {
+			this.guesses[var1] = new PegArray(4);
+		}
 
-	/**
-	 *	Print the introduction screen
-	 */
+		this.master = new PegArray(4);
+	}
+
+	public static void main(String[] var0) {
+		MasterMind var1 = new MasterMind();
+		var1.run();
+	}
+
+	public void run() {
+		this.printIntroduction();
+		this.setMaster();
+		this.playGame();
+	}
+
+	public void setMaster() {
+		for (int var1 = 0; var1 < 4; ++var1) {
+			char var2 = (char) ((int) (Math.random() * 6.0) + 65);
+			this.master.getPeg(var1).setLetter(var2);
+		}
+
+	}
+
+	public void playGame() {
+		Prompt.getString("Hit the Enter key to start the game");
+		int var1 = 0;
+		boolean var2 = false;
+
+		int var5;
+		do {
+			this.printBoard();
+			System.out.println("\nGuess " + (var1 + 1) + "\n");
+			String var3 = this.getGuess();
+
+			for (int var4 = 0; var4 < 4; ++var4) {
+				this.guesses[var1].getPeg(var4).setLetter(var3.charAt(var4));
+			}
+
+			var5 = this.guesses[var1].getExactMatches(this.master);
+			this.guesses[var1].getPartialMatches(this.master);
+			++var1;
+		} while (var5 < 4 && var1 < 10);
+
+		this.reveal = true;
+		this.printBoard();
+		if (var5 < 4) {
+			System.out.println("Oops. You were unable to find the solution in 10 guesses.");
+		} else {
+			System.out.println("\nNice work! You found the master code in " + var1 + " guesses.\n");
+		}
+
+	}
+
+	public String getGuess() {
+		boolean var1 = true;
+		String var2 = "";
+
+		do {
+			var2 = Prompt.getString("Enter the code using (A,B,C,D,E,F). For example, ABCD or abcd from left-to-right");
+			var2 = var2.toUpperCase();
+			var1 = true;
+			if (var2.length() != 4) {
+				var1 = false;
+			}
+
+			for (int var3 = 0; var3 < var2.length(); ++var3) {
+				char var4 = var2.charAt(var3);
+				if (var4 < 'A' || var4 > 'F') {
+					var1 = false;
+				}
+			}
+
+			if (!var1) {
+				System.out.println("ERROR: Bad input, try again.");
+			}
+		} while (!var1);
+
+		return var2;
+	}
+
 	public void printIntroduction() {
 		System.out.println("\n");
 		System.out.println("+------------------------------------------------------------------------------------+");
 		System.out.println("| ___  ___             _              ___  ___ _             _                       |");
 		System.out.println("| |  \\/  |            | |             |  \\/  |(_)           | |                      |");
 		System.out.println("| | .  . |  __ _  ___ | |_  ___  _ __ | .  . | _  _ __    __| |                      |");
-		System.out.println("| | |\\/| | / _` |/ __|| __|/ _ \\| '__|| |\\/| || || '_ \\  / _` |                      |");
+		System.out
+				.println("| | |\\/| | / _` |/ __|| __|/ _ \\| '__|| |\\/| || || '_ \\  / _` |                      |");
 		System.out.println("| | |  | || (_| |\\__ \\| |_|  __/| |   | |  | || || | | || (_| |                      |");
-		System.out.println("| \\_|  |_/ \\__,_||___/ \\__|\\___||_|   \\_|  |_/|_||_| |_| \\__,_|                      |");
+		System.out.println(
+				"| \\_|  |_/ \\__,_||___/ \\__|\\___||_|   \\_|  |_/|_||_| |_| \\__,_|                      |");
 		System.out.println("|                                                                                    |");
 		System.out.println("| WELCOME TO MONTA VISTA MASTERMIND!                                                 |");
 		System.out.println("|                                                                                    |");
@@ -47,57 +121,71 @@ public class MasterMind {
 		System.out.println("+------------------------------------------------------------------------------------+");
 		System.out.println("\n");
 	}
-	
-	/**
-	 *	Print the peg board to the screen
-	 */
+
 	public void printBoard() {
-		// Print header
 		System.out.print("+--------+");
-		for (int a = 0; a < PEGS_IN_CODE; a++) System.out.print("-------+");
+
+		int var1;
+		for (var1 = 0; var1 < 4; ++var1) {
+			System.out.print("-------+");
+		}
+
 		System.out.println("---------------+");
 		System.out.print("| MASTER |");
-		for (int a = 0; a < PEGS_IN_CODE; a++)
-			if (reveal)
-				System.out.printf("   %c   |", master.getPeg(a).getLetter());
-			else
+
+		for (var1 = 0; var1 < 4; ++var1) {
+			if (this.reveal) {
+				System.out.printf("   %c   |", this.master.getPeg(var1).getLetter());
+			} else {
 				System.out.print("  ***  |");
+			}
+		}
+
 		System.out.println(" Exact Partial |");
 		System.out.print("|        +");
-		for (int a = 0; a < PEGS_IN_CODE; a++) System.out.print("-------+");
+
+		for (var1 = 0; var1 < 4; ++var1) {
+			System.out.print("-------+");
+		}
+
 		System.out.println("               |");
-		// Print Guesses
 		System.out.print("| GUESS  +");
-		for (int a = 0; a < PEGS_IN_CODE; a++) System.out.print("-------+");
+
+		for (var1 = 0; var1 < 4; ++var1) {
+			System.out.print("-------+");
+		}
+
 		System.out.println("---------------|");
-		for (int g = 0; g < MAX_GUESSES - 1; g++) {
-			printGuess(g);
+
+		for (var1 = 0; var1 < 9; ++var1) {
+			this.printGuess(var1);
 			System.out.println("|        +-------+-------+-------+-------+---------------|");
 		}
-		printGuess(MAX_GUESSES - 1);
-		// print bottom
+
+		this.printGuess(9);
 		System.out.print("+--------+");
-		for (int a = 0; a < PEGS_IN_CODE; a++) System.out.print("-------+");
+
+		for (var1 = 0; var1 < 4; ++var1) {
+			System.out.print("-------+");
+		}
+
 		System.out.println("---------------+");
 	}
-	
-	/**
-	 *	Print one guess line to screen
-	 *	@param t	the guess turn
-	 */
-	public void printGuess(int t) {
-		System.out.printf("|   %2d   |", (t + 1));
-		// If peg letter in the A to F range
-		char c = guesses[t].getPeg(0).getLetter();
-		if (c >= 'A' && c <= 'F')
-			for (int p = 0; p < PEGS_IN_CODE; p++)
-				System.out.print("   " + guesses[t].getPeg(p).getLetter() + "   |");
-		// If peg letters are not A to F range
-		else
-			for (int p = 0; p < PEGS_IN_CODE; p++)
-				System.out.print("       |");
-		System.out.printf("   %d      %d    |\n",
-							guesses[t].getExact(), guesses[t].getPartial());
-	}
 
+	public void printGuess(int var1) {
+		System.out.printf("|   %2d   |", var1 + 1);
+		char var2 = this.guesses[var1].getPeg(0).getLetter();
+		int var3;
+		if (var2 >= 'A' && var2 <= 'F') {
+			for (var3 = 0; var3 < 4; ++var3) {
+				System.out.print("   " + this.guesses[var1].getPeg(var3).getLetter() + "   |");
+			}
+		} else {
+			for (var3 = 0; var3 < 4; ++var3) {
+				System.out.print("       |");
+			}
+		}
+
+		System.out.printf("   %d      %d    |\n", this.guesses[var1].getExact(), this.guesses[var1].getPartial());
+	}
 }

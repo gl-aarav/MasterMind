@@ -1,53 +1,74 @@
-/**
- *  This class creates and manages one array of pegs from the game MasterMind.
- *
- *  @author
- *  @since
-*/
-
+// Source code is decompiled from a .class file using FernFlower decompiler (from Intellij IDEA).
 public class PegArray {
+	private Peg[] pegs;
+	private int exactMatches;
+	private int partialMatches;
 
-	// array of pegs
-	private Peg [] pegs;
+	public PegArray(int var1) {
+		this.pegs = new Peg[var1];
 
-	// the number of exact and partial matches for this array
-	// as matched against the master.
-	// Precondition: these values are valid after getExactMatches() and getPartialMatches()
-	//				are called
-	private int exactMatches, partialMatches;
-		
-	/**
-	 *	Constructor
-	 *	@param numPegs	number of pegs in the array
-	 */
-	public PegArray(int numPegs) {	}
-	
-	/**
-	 *	Return the peg object
-	 *	@param n	The peg index into the array
-	 *	@return		the peg object
-	 */
-	public Peg getPeg(int n) { return pegs[n]; }
-	
-	/**
-	 *  Finds exact matches between master (key) peg array and this peg array
-	 *	Postcondition: field exactMatches contains the matches with the master
-	 *  @param master	The master (code) peg array
-	 *	@return			The number of exact matches
-	 */
-	public int getExactMatches(PegArray master) { return 0; }
-	
-	/**
-	 *  Find partial matches between master (key) peg array and this peg array
-	 *	Postcondition: field partialMatches contains the matches with the master
-	 *  @param master	The master (code) peg array
-	 *	@return			The number of partial matches
-	 */
-	public int getPartialMatches(PegArray master) { return 0; }
-	
-	// Accessor methods
-	// Precondition: getExactMatches() and getPartialMatches() must be called first
-	public int getExact() { return exactMatches; }
-	public int getPartial() { return partialMatches; }
+		for (int var2 = 0; var2 < this.pegs.length; ++var2) {
+			this.pegs[var2] = new Peg();
+		}
 
+	}
+
+	public Peg getPeg(int var1) {
+		return this.pegs[var1];
+	}
+
+	public int getExactMatches(PegArray var1) {
+		this.exactMatches = 0;
+
+		for (int var2 = 0; var2 < this.pegs.length; ++var2) {
+			if (this.pegs[var2].getLetter() == var1.getPeg(var2).getLetter()) {
+				++this.exactMatches;
+			}
+		}
+
+		return this.exactMatches;
+	}
+
+	public int getPartialMatches(PegArray var1) {
+		boolean[] var2 = new boolean[this.pegs.length];
+		boolean[] var3 = new boolean[this.pegs.length];
+
+		int var4;
+		for (var4 = 0; var4 < var2.length; ++var4) {
+			if (this.pegs[var4].getLetter() == var1.getPeg(var4).getLetter()) {
+				var2[var4] = false;
+				var3[var4] = false;
+			} else {
+				var2[var4] = true;
+				var3[var4] = true;
+			}
+		}
+
+		this.partialMatches = 0;
+
+		for (var4 = 0; var4 < var3.length; ++var4) {
+			if (var3[var4]) {
+				int var5 = 0;
+
+				for (boolean var6 = false; var5 < var2.length && !var6; ++var5) {
+					if (var2[var5] && this.pegs[var4].getLetter() == var1.getPeg(var5).getLetter()) {
+						++this.partialMatches;
+						var2[var5] = false;
+						var3[var4] = false;
+						var6 = true;
+					}
+				}
+			}
+		}
+
+		return this.partialMatches;
+	}
+
+	public int getExact() {
+		return this.exactMatches;
+	}
+
+	public int getPartial() {
+		return this.partialMatches;
+	}
 }
