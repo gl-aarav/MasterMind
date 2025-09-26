@@ -4,7 +4,7 @@
  * @author Aarav Goyal
  * @since September 26, 2025
  */
-public class MasterMind {
+public class MasterMind_V2 {
 	private final int PEGS_IN_CODE; // Number of pegs in the MasterMind code
 	private final int MAX_GUESSES; // Maximum number of guesses allowed
 	private final int PEG_LETTERS; // Number of possible letters (A-F)
@@ -16,7 +16,7 @@ public class MasterMind {
 	 * Constructs a MasterMind game instance.
 	 * Initializes the player guesses array and the master code.
 	 */
-	public MasterMind() {
+	public MasterMind_V2() {
 		PEGS_IN_CODE = 4; // Number of pegs in the code
 		MAX_GUESSES = 10; // Maximum number of guesses allowed
 		PEG_LETTERS = 6; // Letters A-F
@@ -37,7 +37,7 @@ public class MasterMind {
 	 * @param args Command line arguments (not used).
 	 */
 	public static void main(String[] args) {
-		MasterMind game = new MasterMind();
+		MasterMind_V2 game = new MasterMind_V2();
 		game.run();
 	}
 
