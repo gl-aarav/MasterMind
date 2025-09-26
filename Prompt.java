@@ -18,8 +18,12 @@ import java.io.IOException;
 public class Prompt
 {
 	// BufferedReader variables
-	private static InputStreamReader streamReader = new InputStreamReader(System.in);
-	private static BufferedReader buffReader = new BufferedReader(streamReader);
+	private static InputStreamReader streamReader;
+	private static BufferedReader bufReader;
+
+	public Prompt() {
+	}
+
 	/**
 	 *	Prompts user for string of characters and returns the string.
 	 *	@param ask  The prompt line
@@ -30,7 +34,7 @@ public class Prompt
 		System.out.print(ask + " -> ");
 		String input = "";
 		try {
-			input = buffReader.readLine();
+			input = bufReader.readLine();
 		}
 		catch (IOException e) {
 			System.err.println("ERROR: Buffered Reader could not read line");
@@ -43,13 +47,17 @@ public class Prompt
 	 *	@param ask  The prompt line
 	 *	@return  	The character input
 	 */
-	public static char getChar(String ask) 
-	{
-		String str = "";
+	public static char getChar(String var0) {
+		new String("");
+		boolean var2 = true;
+
+		String var1;
 		do {
-			str = getString(ask);
-		} while (str.length() != 1);
-		return str.charAt(0);
+			var1 = getString(var0);
+		} while(var1.length() != 1);
+
+		char var3 = var1.charAt(0);
+		return var3;
 	}
 	
 	/**
@@ -85,11 +93,16 @@ public class Prompt
 	 */
 	public static int getInt (String ask, int min, int max)
 	{
-		int val = 0;
+		boolean var3 = false;
+
+		int var4;
 		do {
-			val = getInt(ask + "(" + min + "," + max + ")");
-		} while (val < min || val > max);
-		return val;
+			do {
+				var4 = getInt(ask + " (" + min + " - " + max + ")");
+			} while(var4 < min);
+		} while(var4 > max);
+
+		return var4;
 	}
 	
 	/**
@@ -99,20 +112,22 @@ public class Prompt
 	 */
 	public static double getDouble (String ask)
 	{
-		double val = 0.0;
-		boolean found = false;
-		while (!found) {
-			String str = getString(ask);
+		boolean var1 = false;
+		new String("");
+		double var3 = 0.0;
+
+		do {
+			var1 = false;
+			String var2 = getString(ask);
+
 			try {
-				val = Double.parseDouble(str);
-				found = true;
+				var3 = Double.parseDouble(var2);
+			} catch (NumberFormatException var6) {
+				var1 = true;
 			}
-			catch (NumberFormatException e) {
-				found = false;
-			}
-		}
-		
-		return val;
+		} while(var1);
+
+		return var3;
 	}
 	
 	/**
@@ -124,10 +139,21 @@ public class Prompt
 	 */
 	public static double getDouble (String ask, double min, double max)
 	{
-		double val = 0.0;
+		double var5 = 0.0;
+		String var7 = String.format("%.2f", min);
+		String var8 = String.format("%.2f", max);
+
 		do {
-			val = getDouble(ask + "(" + min + "," + max + ")");
-		} while (val < min || val > max);
-		return val;
+			do {
+				var5 = getDouble(ask + " (" + var7 + " - " + var8 + ")");
+			} while(var5 < min);
+		} while(var5 > max);
+
+		return var5;
+	}
+
+	static {
+		streamReader = new InputStreamReader(System.in);
+		bufReader = new BufferedReader(streamReader);
 	}
 }

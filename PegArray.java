@@ -1,60 +1,90 @@
+/**
+ *  The PegArray class represents an array of pegs, used for both the master code
+ *  and player guesses in the MasterMind game. It also calculates exact and partial matches.
+ *
+ *  @author  Aarav Goyal
+ *  @since   September 26, 2025
+ */
 public class PegArray {
 	private Peg[] pegs;
 	private int exactMatches;
 	private int partialMatches;
 
-	public PegArray(int var1) {
-		this.pegs = new Peg[var1];
+	/**
+	 *  Constructs a PegArray with a specified number of pegs.
+	 *  Initializes each peg in the array to a default 'X' letter.
+	 *  @param numberOfPegs The number of pegs in this array.
+	 */
+	public PegArray(int numberOfPegs) {
+		this.pegs = new Peg[numberOfPegs];
 
-		for (int var2 = 0; var2 < this.pegs.length; ++var2) {
-			this.pegs[var2] = new Peg();
+		for (int pegIndex = 0; pegIndex < this.pegs.length; pegIndex++) {
+			this.pegs[pegIndex] = new Peg();
 		}
 
 	}
 
-	public Peg getPeg(int var1) {
-		return this.pegs[var1];
+	/**
+	 *  Retrieves a peg at the specified index.
+	 *  @param index The index of the peg to retrieve.
+	 *  @return The Peg object at the given index.
+	 */
+	public Peg getPeg(int index) {
+		return this.pegs[index];
 	}
 
-	public int getExactMatches(PegArray var1) {
+	/**
+	 *  Calculates the number of exact matches between this PegArray and another PegArray.
+	 *  An exact match occurs when a peg has the same letter and is at the same position.
+	 *  @param otherPegArray The other PegArray to compare against.
+	 *  @return The count of exact matches.
+	 */
+	public int getExactMatches(PegArray otherPegArray) {
 		this.exactMatches = 0;
 
-		for (int var2 = 0; var2 < this.pegs.length; ++var2) {
-			if (this.pegs[var2].getLetter() == var1.getPeg(var2).getLetter()) {
-				++this.exactMatches;
+		for (int pegIndex = 0; pegIndex < this.pegs.length; pegIndex++) {
+			if (this.pegs[pegIndex].getLetter() == otherPegArray.getPeg(pegIndex).getLetter()) {
+				this.exactMatches++;
 			}
 		}
 
 		return this.exactMatches;
 	}
 
-	public int getPartialMatches(PegArray var1) {
-		boolean[] var2 = new boolean[this.pegs.length];
-		boolean[] var3 = new boolean[this.pegs.length];
+	/**
+	 *  Calculates the number of partial matches between this PegArray and another PegArray.
+	 *  A partial match occurs when a peg has the same letter but is at a different position,
+	 *  and has not already been counted as an exact or partial match.
+	 *  @param otherPegArray The other PegArray to compare against.
+	 *  @return The count of partial matches.
+	 */
+	public int getPartialMatches(PegArray otherPegArray) {
+		boolean[] thisPegMatched = new boolean[this.pegs.length];
+		boolean[] otherPegMatched = new boolean[this.pegs.length];
 
-		int var4;
-		for (var4 = 0; var4 < var2.length; ++var4) {
-			if (this.pegs[var4].getLetter() == var1.getPeg(var4).getLetter()) {
-				var2[var4] = false;
-				var3[var4] = false;
+		int pegIndex;
+		for (pegIndex = 0; pegIndex < thisPegMatched.length; pegIndex++) {
+			if (this.pegs[pegIndex].getLetter() == otherPegArray.getPeg(pegIndex).getLetter()) {
+				thisPegMatched[pegIndex] = false;
+				otherPegMatched[pegIndex] = false;
 			} else {
-				var2[var4] = true;
-				var3[var4] = true;
+				thisPegMatched[pegIndex] = true;
+				otherPegMatched[pegIndex] = true;
 			}
 		}
 
 		this.partialMatches = 0;
 
-		for (var4 = 0; var4 < var3.length; ++var4) {
-			if (var3[var4]) {
-				int var5 = 0;
+		for (pegIndex = 0; pegIndex < otherPegMatched.length; pegIndex++) {
+			if (otherPegMatched[pegIndex]) {
+				int innerPegIndex = 0;
 
-				for (boolean var6 = false; var5 < var2.length && !var6; ++var5) {
-					if (var2[var5] && this.pegs[var4].getLetter() == var1.getPeg(var5).getLetter()) {
-						++this.partialMatches;
-						var2[var5] = false;
-						var3[var4] = false;
-						var6 = true;
+				for (boolean foundPartialMatch = false; innerPegIndex < thisPegMatched.length && !foundPartialMatch; innerPegIndex++) {
+					if (thisPegMatched[innerPegIndex] && this.pegs[pegIndex].getLetter() == otherPegArray.getPeg(innerPegIndex).getLetter()) {
+						this.partialMatches++;
+						thisPegMatched[innerPegIndex] = false;
+						otherPegMatched[pegIndex] = false;
+						foundPartialMatch = true;
 					}
 				}
 			}
@@ -63,10 +93,18 @@ public class PegArray {
 		return this.partialMatches;
 	}
 
+	/**
+	 *  Returns the number of exact matches found in the last comparison.
+	 *  @return The count of exact matches.
+	 */
 	public int getExact() {
 		return this.exactMatches;
 	}
 
+	/**
+	 *  Returns the number of partial matches found in the last comparison.
+	 *  @return The count of partial matches.
+	 */
 	public int getPartial() {
 		return this.partialMatches;
 	}
