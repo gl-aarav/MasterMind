@@ -1,37 +1,38 @@
 /**
- *  This program implements the MasterMind game.
+ * This program implements the MasterMind game.
  *
- *  @author  Aarav Goyal
- *  @since   September 26, 2025
+ * @author Aarav Goyal
+ * @since September 26, 2025
  */
 public class MasterMind {
 	private final int PEGS_IN_CODE; // Number of pegs in the MasterMind code
-	private final int MAX_GUESSES;  // Maximum number of guesses allowed
-	private final int PEG_LETTERS;  // Number of possible letters (A-F)
-	private PegArray[] guesses;     // Array to store player's guesses
-	private PegArray master;        // The randomly generated master code
+	private final int MAX_GUESSES; // Maximum number of guesses allowed
+	private final int PEG_LETTERS; // Number of possible letters (A-F)
+	private PegArray[] guesses; // Array to store player's guesses
+	private PegArray master; // The randomly generated master code
 
 	/**
-	 *  Constructs a MasterMind game instance.
-	 *  Initializes the player guesses array and the master code.
+	 * Constructs a MasterMind game instance.
+	 * Initializes the player guesses array and the master code.
 	 */
 	public MasterMind() {
-		PEGS_IN_CODE = 4;
-		MAX_GUESSES = 10;
-		PEG_LETTERS = 6;
-		this.guesses = new PegArray[MAX_GUESSES];
+		PEGS_IN_CODE = 4; // Number of pegs in the code
+		MAX_GUESSES = 10; // Maximum number of guesses allowed
+		PEG_LETTERS = 6; // Letters A-F
+		guesses = new PegArray[MAX_GUESSES];
 		// Initialize each element of the guesses array
-		for (int guessIndex = 0; guessIndex < this.guesses.length; guessIndex++) {
-			this.guesses[guessIndex] = new PegArray(PEGS_IN_CODE);
+		for (int guessIndex = 0; guessIndex < guesses.length; guessIndex++) {
+			guesses[guessIndex] = new PegArray(PEGS_IN_CODE);
 		}
 
 		// Initialize the master code
-		this.master = new PegArray(PEGS_IN_CODE);
+		master = new PegArray(PEGS_IN_CODE);
 	}
 
 	/**
-	 *  Main method to start the MasterMind game.
-	 *  @param args Command line arguments (not used).
+	 * Main method to start the MasterMind game.
+	 * 
+	 * @param args Command line arguments (not used).
 	 */
 	public static void main(String[] args) {
 		MasterMind game = new MasterMind();
@@ -39,8 +40,9 @@ public class MasterMind {
 	}
 
 	/**
-	 *  Runs the MasterMind game sequence.
-	 *  Includes printing the introduction, setting the master code, and playing the game.
+	 * Runs the MasterMind game sequence.
+	 * Includes printing the introduction, setting the master code, and playing the
+	 * game.
 	 */
 	public void run() {
 		this.printIntroduction();
@@ -49,8 +51,9 @@ public class MasterMind {
 	}
 
 	/**
-	 *  Sets a random master code for the game.
-	 *  The code consists of PEGS_IN_CODE pegs, each with a random letter from 'A' to 'F'.
+	 * Sets a random master code for the game.
+	 * The code consists of PEGS_IN_CODE pegs, each with a random letter from 'A' to
+	 * 'F'.
 	 */
 	public void setMaster() {
 		// Generate a random letter for each peg in the master code
@@ -62,9 +65,9 @@ public class MasterMind {
 	}
 
 	/**
-	 *  Manages the main gameplay loop.
-	 *  Players make guesses, and exact and partial matches are reported.
-	 *  The game ends when the master code is guessed or max guesses are reached.
+	 * Manages the main gameplay loop.
+	 * Players make guesses, and exact and partial matches are reported.
+	 * The game ends when the master code is guessed or max guesses are reached.
 	 */
 	public void playGame() {
 		Prompt.getString("Hit the Enter key to start the game");
@@ -102,9 +105,11 @@ public class MasterMind {
 	}
 
 	/**
-	 *  Prompts the user for a guess and validates the input.
-	 *  Ensures the guess is 4 characters long and consists of letters from 'A' to 'F'.
-	 *  @return The validated player's guess as an uppercase string.
+	 * Prompts the user for a guess and validates the input.
+	 * Ensures the guess is 4 characters long and consists of letters from 'A' to
+	 * 'F'.
+	 * 
+	 * @return The validated player's guess as an uppercase string.
 	 */
 	public String getGuess() {
 		boolean isValidInput = true;
@@ -139,7 +144,7 @@ public class MasterMind {
 	}
 
 	/**
-	 *  Prints the introduction and rules of the MasterMind game to the console.
+	 * Prints the introduction and rules of the MasterMind game to the console.
 	 */
 	public void printIntroduction() {
 		System.out.println("\n");
@@ -147,9 +152,11 @@ public class MasterMind {
 		System.out.println("| ___  ___             _              ___  ___ _             _                       |");
 		System.out.println("| |  \\/  |            | |             |  \\/  |(_)           | |                      |");
 		System.out.println("| | .  . |  __ _  ___ | |_  ___  _ __ | .  . | _  _ __    __| |                      |");
-		System.out.println("| | |\\/| | / _` |/ __|| __|/ _ \\| '__|| |\\/| || || '_ \\  / _` |                      |");
+		System.out
+				.println("| | |\\/| | / _` |/ __|| __|/ _ \\| '__|| |\\/| || || '_ \\  / _` |                      |");
 		System.out.println("| | |  | || (_| |\\__ \\| |_|  __/| |   | |  | || || | | || (_| |                      |");
-		System.out.println("| \\_|  |_/ \\__,_||___/ \\__|\\___||_|   \\_|  |_/|_||_| |_| \\__,_|                      |");
+		System.out.println(
+				"| \\_|  |_/ \\__,_||___/ \\__|\\___||_|   \\_|  |_/|_||_| |_| \\__,_|                      |");
 		System.out.println("|                                                                                    |");
 		System.out.println("| WELCOME TO MONTA VISTA MASTERMIND!                                                 |");
 		System.out.println("|                                                                                    |");
@@ -170,8 +177,8 @@ public class MasterMind {
 	}
 
 	/**
-	 *  Displays the current state of the game board.
-	 *  Shows the master code (if revealed), player guesses, and match results.
+	 * Displays the current state of the game board.
+	 * Shows the master code (if revealed), player guesses, and match results.
 	 */
 	public void printBoard() {
 		System.out.print("+--------+"); // Top border of the board
@@ -227,9 +234,11 @@ public class MasterMind {
 	}
 
 	/**
-	 *  Displays a single guess row on the game board.
-	 *  Shows the guess number, the pegs in the guess, and the exact and partial matches.
-	 *  @param guessNumber The index of the guess to display (0-based).
+	 * Displays a single guess row on the game board.
+	 * Shows the guess number, the pegs in the guess, and the exact and partial
+	 * matches.
+	 * 
+	 * @param guessNumber The index of the guess to display (0-based).
 	 */
 	public void printGuess(int guessNumber) {
 		System.out.printf("|   %2d   |", guessNumber + 1);
@@ -247,6 +256,7 @@ public class MasterMind {
 			}
 		}
 
-		System.out.printf("   %d      %d    |\n", this.guesses[guessNumber].getExact(), this.guesses[guessNumber].getPartial());
+		System.out.printf("   %d      %d    |\n", this.guesses[guessNumber].getExact(),
+				this.guesses[guessNumber].getPartial());
 	}
 }
