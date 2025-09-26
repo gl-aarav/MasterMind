@@ -49,7 +49,6 @@ public class Prompt
 	 */
 	public static char getChar(String var0) {
 		new String("");
-		boolean var2 = true;
 
 		String var1;
 		do {
@@ -93,7 +92,7 @@ public class Prompt
 	 */
 	public static int getInt (String ask, int min, int max)
 	{
-		boolean var3 = false;
+
 
 		int var4;
 		do {

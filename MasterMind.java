@@ -5,19 +5,21 @@
  *  @since   September 26, 2025
  */
 public class MasterMind {
-	private final int PEGS_IN_CODE = 4; // Number of pegs in the MasterMind code
-	private final int MAX_GUESSES = 10; // Maximum number of guesses allowed
-	private final int PEG_LETTERS = 6; // Number of possible letters (A-F)
-	private final boolean DEBUG = false;
-	private boolean reveal = false;
-	private PegArray[] guesses = new PegArray[MAX_GUESSES];
-	private PegArray master;
+	private final int PEGS_IN_CODE; // Number of pegs in the MasterMind code
+	private final int MAX_GUESSES;  // Maximum number of guesses allowed
+	private final int PEG_LETTERS;  // Number of possible letters (A-F)
+	private PegArray[] guesses;     // Array to store player's guesses
+	private PegArray master;        // The randomly generated master code
 
 	/**
 	 *  Constructs a MasterMind game instance.
 	 *  Initializes the player guesses array and the master code.
 	 */
 	public MasterMind() {
+		PEGS_IN_CODE = 4;
+		MAX_GUESSES = 10;
+		PEG_LETTERS = 6;
+		this.guesses = new PegArray[MAX_GUESSES];
 		// Initialize each element of the guesses array
 		for (int guessIndex = 0; guessIndex < this.guesses.length; guessIndex++) {
 			this.guesses[guessIndex] = new PegArray(PEGS_IN_CODE);
@@ -87,7 +89,6 @@ public class MasterMind {
 		} while (exactMatchesInCurrentGuess < PEGS_IN_CODE && currentGuessNumber < MAX_GUESSES);
 
 		// Reveal the master code at the end of the game
-		this.reveal = true;
 		this.printBoard();
 		// Determine if the player won or lost and print appropriate message
 		if (exactMatchesInCurrentGuess < PEGS_IN_CODE) {
@@ -186,11 +187,7 @@ public class MasterMind {
 
 		// Display master code pegs or asterisks if not revealed
 		for (boardLineIndex = 0; boardLineIndex < PEGS_IN_CODE; boardLineIndex++) {
-			if (this.reveal) {
-				System.out.printf("   %c   |", this.master.getPeg(boardLineIndex).getLetter());
-			} else {
-				System.out.print("  ***  |");
-			}
+			System.out.printf("   %c   |", this.master.getPeg(boardLineIndex).getLetter());
 		}
 
 		System.out.println(" Exact Partial |");
