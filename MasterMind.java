@@ -10,6 +10,7 @@ public class MasterMind {
 	private final int PEG_LETTERS; // Number of possible letters (A-F)
 	private PegArray[] guesses; // Array to store player's guesses
 	private PegArray master; // The randomly generated master code
+	private boolean masterRevealed; // whether to show the master code on the board
 
 	/**
 	 * Constructs a MasterMind game instance.
@@ -27,6 +28,7 @@ public class MasterMind {
 
 		// Initialize the master code
 		master = new PegArray(PEGS_IN_CODE);
+		this.masterRevealed = false;
 	}
 
 	/**
@@ -92,6 +94,7 @@ public class MasterMind {
 		} while (exactMatchesInCurrentGuess < PEGS_IN_CODE && currentGuessNumber < MAX_GUESSES);
 
 		// Reveal the master code at the end of the game
+		this.masterRevealed = true;
 		this.printBoard();
 		// Determine if the player won or lost and print appropriate message
 		if (exactMatchesInCurrentGuess < PEGS_IN_CODE) {
@@ -177,10 +180,32 @@ public class MasterMind {
 	}
 
 	/**
+	 * Clears the terminal screen using ANSI escape codes.
+	 * Most modern terminals (macOS Terminal, iTerm, Linux terminals) support these
+	 * codes.
+	 */
+	private void clearScreen() {
+		try {
+			// Try to invoke the platform clear command so the terminal itself clears.
+			new ProcessBuilder("clear").inheritIO().start().waitFor();
+		} catch (Exception e) {
+			// Fallback to ANSI escape codes if the clear command isn't available.
+			final String ANSI_CLS = "\u001b[2J"; // clear screen
+			final String ANSI_HOME = "\u001b[H"; // move cursor to home position
+			System.out.print(ANSI_CLS + ANSI_HOME);
+			System.out.flush();
+		}
+	}
+
+	/**
 	 * Displays the current state of the game board.
 	 * Shows the master code (if revealed), player guesses, and match results.
 	 */
 	public void printBoard() {
+		// Clear the terminal screen so only the board is visible.
+		// Uses ANSI escape codes which work on most terminals (including macOS Terminal
+		// and iTerm).
+		this.clearScreen();
 		System.out.print("+--------+"); // Top border of the board
 
 		// Print separators for pegs
@@ -194,7 +219,11 @@ public class MasterMind {
 
 		// Display master code pegs or asterisks if not revealed
 		for (boardLineIndex = 0; boardLineIndex < PEGS_IN_CODE; boardLineIndex++) {
-			System.out.printf("   %c   |", this.master.getPeg(boardLineIndex).getLetter());
+			if (this.masterRevealed) {
+				System.out.printf("   %c   |", this.master.getPeg(boardLineIndex).getLetter());
+			} else {
+				System.out.print("   *   |");
+			}
 		}
 
 		System.out.println(" Exact Partial |");
