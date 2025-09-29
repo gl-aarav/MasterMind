@@ -1,9 +1,10 @@
 /**
- *  The PegArray class represents an array of pegs, used for both the master code
- *  and player guesses in the MasterMind game. It also calculates exact and partial matches.
+ * The PegArray class represents an array of pegs, used for both the master code
+ * and player guesses in the MasterMind game. It also calculates exact and
+ * partial matches.
  *
- *  @author  Aarav Goyal
- *  @since   September 26, 2025
+ * @author Aarav Goyal
+ * @since September 26, 2025
  */
 public class PegArray {
 	private Peg[] pegs;
@@ -11,9 +12,10 @@ public class PegArray {
 	private int partialMatches;
 
 	/**
-	 *  Constructs a PegArray with a specified number of pegs.
-	 *  Initializes each peg in the array to a default 'X' letter.
-	 *  @param numberOfPegs The number of pegs in this array.
+	 * Constructs a PegArray with a specified number of pegs.
+	 * Initializes each peg in the array to a default 'X' letter.
+	 * 
+	 * @param numberOfPegs The number of pegs in this array.
 	 */
 	public PegArray(int numberOfPegs) {
 		this.pegs = new Peg[numberOfPegs];
@@ -25,19 +27,23 @@ public class PegArray {
 	}
 
 	/**
-	 *  Retrieves a peg at the specified index.
-	 *  @param index The index of the peg to retrieve.
-	 *  @return The Peg object at the given index.
+	 * Retrieves a peg at the specified index.
+	 * 
+	 * @param index The index of the peg to retrieve.
+	 * @return The Peg object at the given index.
 	 */
 	public Peg getPeg(int index) {
 		return this.pegs[index];
 	}
 
 	/**
-	 *  Calculates the number of exact matches between this PegArray and another PegArray.
-	 *  An exact match occurs when a peg has the same letter and is at the same position.
-	 *  @param otherPegArray The other PegArray to compare against.
-	 *  @return The count of exact matches.
+	 * Calculates the number of exact matches between this PegArray and another
+	 * PegArray.
+	 * An exact match occurs when a peg has the same letter and is at the same
+	 * position.
+	 * 
+	 * @param otherPegArray The other PegArray to compare against.
+	 * @return The count of exact matches.
 	 */
 	public int getExactMatches(PegArray otherPegArray) {
 		this.exactMatches = 0;
@@ -52,11 +58,14 @@ public class PegArray {
 	}
 
 	/**
-	 *  Calculates the number of partial matches between this PegArray and another PegArray.
-	 *  A partial match occurs when a peg has the same letter but is at a different position,
-	 *  and has not already been counted as an exact or partial match.
-	 *  @param otherPegArray The other PegArray to compare against.
-	 *  @return The count of partial matches.
+	 * Calculates the number of partial matches between this PegArray and another
+	 * PegArray.
+	 * A partial match occurs when a peg has the same letter but is at a different
+	 * position,
+	 * and has not already been counted as an exact or partial match.
+	 * 
+	 * @param otherPegArray The other PegArray to compare against.
+	 * @return The count of partial matches.
 	 */
 	public int getPartialMatches(PegArray otherPegArray) {
 		boolean[] thisPegMatched = new boolean[this.pegs.length];
@@ -79,8 +88,10 @@ public class PegArray {
 			if (otherPegMatched[pegIndex]) {
 				int innerPegIndex = 0;
 
-				for (boolean foundPartialMatch = false; innerPegIndex < thisPegMatched.length && !foundPartialMatch; innerPegIndex++) {
-					if (thisPegMatched[innerPegIndex] && this.pegs[pegIndex].getLetter() == otherPegArray.getPeg(innerPegIndex).getLetter()) {
+				for (boolean foundPartialMatch = false; innerPegIndex < thisPegMatched.length
+						&& !foundPartialMatch; innerPegIndex++) {
+					if (thisPegMatched[innerPegIndex]
+							&& this.pegs[pegIndex].getLetter() == otherPegArray.getPeg(innerPegIndex).getLetter()) {
 						this.partialMatches++;
 						thisPegMatched[innerPegIndex] = false;
 						otherPegMatched[pegIndex] = false;
@@ -94,16 +105,18 @@ public class PegArray {
 	}
 
 	/**
-	 *  Returns the number of exact matches found in the last comparison.
-	 *  @return The count of exact matches.
+	 * Returns the number of exact matches found in the last comparison.
+	 * 
+	 * @return The count of exact matches.
 	 */
 	public int getExact() {
 		return this.exactMatches;
 	}
 
 	/**
-	 *  Returns the number of partial matches found in the last comparison.
-	 *  @return The count of partial matches.
+	 * Returns the number of partial matches found in the last comparison.
+	 * 
+	 * @return The count of partial matches.
 	 */
 	public int getPartial() {
 		return this.partialMatches;
